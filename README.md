@@ -8,8 +8,10 @@ QRX makes branded, print-ready QR codes for posters, menus, packaging and signag
 [![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=qrx&config=eyJ1cmwiOiJodHRwczovL3FyeC5jb2Rlcy9tY3AiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgJHtlbnY6UVJYX0FQSV9LRVl9In19)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
-<!-- Example image: replace with a real QRX code and its prompt -->
-<!-- <p align="center"><img src="docs/hero.png" width="420" alt="A QR code painted as a lighthouse at sunset, which scans to qrx.to"></p> -->
+Listed in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `codes.qrx/mcp`.
+
+<p align="center"><img src="assets/icon.png" width="280" alt="A QR code painted as a watercolour river with pine trees, made by QRX"></p>
+<p align="center"><sub>The QRX logo is a QRX code. Point your phone at it.</sub></p>
 
 ## What you can do
 
