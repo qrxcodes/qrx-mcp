@@ -6,6 +6,7 @@ QRX makes branded, print-ready QR codes for posters, menus, packaging and signag
 
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_QRX-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=qrx&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22qrx-api-key%22%2C%22description%22%3A%22QRX%20API%20key%20%28starts%20with%20qrx_%29%22%2C%22password%22%3Atrue%7D%5D&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fqrx.codes%2Fmcp%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20%24%7Binput%3Aqrx-api-key%7D%22%7D%7D)
 [![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=qrx&config=eyJ1cmwiOiJodHRwczovL3FyeC5jb2Rlcy9tY3AiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgJHtlbnY6UVJYX0FQSV9LRVl9In19)
+[![Glama](https://glama.ai/mcp/connectors/codes.qrx/mcp/badges/score.svg)](https://glama.ai/mcp/connectors/codes.qrx/mcp)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
 Listed in the [official MCP Registry](https://registry.modelcontextprotocol.io/) as `codes.qrx/mcp`.
