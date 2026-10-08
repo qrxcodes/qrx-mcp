@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "codes.qrx/qrx",
+  "name": "codes.qrx/mcp",
   "title": "QRX",
   "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
   "version": "1.0.0",
