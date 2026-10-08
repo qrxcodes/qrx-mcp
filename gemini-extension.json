@@ -1,0 +1,20 @@
+{
+  "name": "qrx",
+  "version": "1.0.0",
+  "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "qrx": {
+      "httpUrl": "https://qrx.codes/mcp",
+      "headers": { "Authorization": "Bearer ${QRX_API_KEY}" }
+    }
+  },
+  "settings": [
+    {
+      "name": "QRX API key",
+      "description": "Create one at https://qrx.codes/developers/keys (starts with qrx_).",
+      "envVar": "QRX_API_KEY",
+      "sensitive": true
+    }
+  ]
+}

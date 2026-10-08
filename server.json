@@ -1,0 +1,66 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "codes.qrx/qrx",
+  "title": "QRX",
+  "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
+  "version": "1.0.0",
+  "websiteUrl": "https://qrx.codes/developers",
+  "repository": {
+    "url": "https://github.com/qrxcodes/qrx-mcp",
+    "source": "github",
+    "id": "1410735001"
+  },
+  "icons": [
+    {
+      "src": "https://qrx.codes/images/brand/qrx-code-512.png",
+      "mimeType": "image/png",
+      "sizes": ["512x512"]
+    },
+    {
+      "src": "https://qrx.codes/images/brand/qrx-mark.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["any"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://qrx.codes/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Your QRX API key from https://qrx.codes/developers/keys, sent as a bearer token.",
+          "value": "Bearer {qrx_api_key}",
+          "isRequired": true,
+          "isSecret": true,
+          "variables": {
+            "qrx_api_key": {
+              "description": "QRX API key (starts with qrx_). Create one at https://qrx.codes/developers/keys.",
+              "placeholder": "qrx_...",
+              "isRequired": true,
+              "isSecret": true
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "codes.qrx": {
+        "docs": "https://qrx.codes/developers/mcp",
+        "llmsTxt": "https://qrx.codes/llms.txt",
+        "auth": ["api-key"],
+        "tools": [
+          "generate_qr_code",
+          "get_qr_code",
+          "list_qr_codes",
+          "change_qr_code_destination",
+          "get_account",
+          "get_profile",
+          "list_styles"
+        ]
+      }
+    }
+  }
+}

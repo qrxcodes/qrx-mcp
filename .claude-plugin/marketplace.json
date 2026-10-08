@@ -1,0 +1,19 @@
+{
+  "name": "qrx",
+  "description": "QRX plugins for Claude Code: branded, print-ready art QR codes that always scan.",
+  "owner": {
+    "name": "QRX",
+    "email": "hello@qrx.codes",
+    "url": "https://qrx.codes"
+  },
+  "plugins": [
+    {
+      "name": "qrx",
+      "source": "./",
+      "description": "Make branded, print-ready art QR codes that always scan, from a prompt and a link. Includes the QRX MCP server and a skill that teaches prompting, polling and print checks.",
+      "category": "design",
+      "tags": ["qr-code", "design", "branding", "print", "marketing", "mcp"],
+      "homepage": "https://qrx.codes/developers"
+    }
+  ]
+}

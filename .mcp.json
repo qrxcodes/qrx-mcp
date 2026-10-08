@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "qrx": {
+      "type": "http",
+      "url": "https://qrx.codes/mcp",
+      "headers": {
+        "Authorization": "Bearer ${user_config.qrx_api_key}"
+      }
+    }
+  }
+}
