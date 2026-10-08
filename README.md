@@ -4,10 +4,8 @@
 
 QRX makes branded, print-ready QR codes for posters, menus, packaging and signage. Describe the look you want and give it a link: QRX paints the code into artwork, checks that it decodes before handing it over, and points it at a hosted short link, `https://qrx.to/<id>` on qrx.codes, that you can re-point later on the Starter plan. This repository connects QRX to Claude, Cursor, VS Code and other MCP clients (ChatGPT once sign-in ships) through the remote server at `https://qrx.codes/mcp`.
 
-[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-codes.qrx%2Fqrx-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=codes.qrx/qrx)
-[![Glama](https://glama.ai/mcp/connectors/codes.qrx/qrx/badges/score.svg)](https://glama.ai/mcp/connectors/codes.qrx/qrx)
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_QRX-0098FF?logo=visualstudiocode&logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=qrx&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22qrx-api-key%22%2C%22description%22%3A%22QRX%20API%20key%20%28starts%20with%20qrx_%29%22%2C%22password%22%3Atrue%7D%5D&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fqrx.codes%2Fmcp%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20%24%7Binput%3Aqrx-api-key%7D%22%7D%7D)
-[![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=qrx&config=eyJ1cmwiOiJodHRwczovL3FyeC5jb2Rlcy9tY3AiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgJHtlbnY6UVJYX0FQSV9LRVl9In19)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_QRX-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=qrx&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22qrx-api-key%22%2C%22description%22%3A%22QRX%20API%20key%20%28starts%20with%20qrx_%29%22%2C%22password%22%3Atrue%7D%5D&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fqrx.codes%2Fmcp%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20%24%7Binput%3Aqrx-api-key%7D%22%7D%7D)
+[![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=qrx&config=eyJ1cmwiOiJodHRwczovL3FyeC5jb2Rlcy9tY3AiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgJHtlbnY6UVJYX0FQSV9LRVl9In19)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
 <!-- Example image: replace with a real QRX code and its prompt -->
@@ -387,7 +385,7 @@ The API, the MCP server and the website share one allowance. Each key is also ra
 | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`, `.mcp.json` | Claude Code plugin and its marketplace (`/plugin marketplace add qrxcodes/qrx-mcp`) |
 | `skills/qrx/` | The `qrx` skill (Agent Skills standard): prompting, waiting for the code, print checks |
 | `gemini-extension.json`, `GEMINI.md` | Gemini CLI extension |
-| `server.json` | The entry published to the official MCP Registry as `codes.qrx/qrx` |
+| `server.json` | The entry for the official MCP Registry |
 | `glama.json` | Glama maintainer claim |
 | `llms-install.md` | Step-by-step set-up written for AI agents (Cline and others) |
 
@@ -417,7 +415,7 @@ Docs sources (re-check these when clients change; all read 8 Oct 2026):
 - ChatGPT custom MCP server (auth: OAuth / No authentication / mixed; no API key option; web only): https://developers.openai.com/api/docs/guides/custom-mcp-server
 - ChatGPT plugins testing: https://developers.openai.com/plugins/deploy/connect-chatgpt.md
 - Cursor mcp.json (url, headers, ${env:VAR}): https://cursor.com/docs/context/mcp
-- Cursor install links (cursor://anysphere.cursor-deeplink/mcp/install?name=&config=<base64>): https://cursor.com/docs/context/mcp/install-links
+- Cursor install links (https://cursor.com/install-mcp?name=&config=<base64>, which hands off to cursor://anysphere.cursor-deeplink/mcp/install): https://cursor.com/docs/context/mcp/install-links
 - VS Code MCP servers (type http, headers, ${input:}): https://code.visualstudio.com/docs/copilot/customization/mcp-servers
 - VS Code MCP configuration reference (inputs is an array of {type,id,description,password}): https://code.visualstudio.com/docs/copilot/reference/mcp-configuration
 - Windsurf / Devin Desktop MCP (serverUrl, headers, ${env:}, config paths; docs.windsurf.com now redirects here): https://docs.devin.ai/desktop/cascade/mcp
@@ -427,5 +425,5 @@ Docs sources (re-check these when clients change; all read 8 Oct 2026):
 - Goose using extensions: https://goose-docs.ai/docs/getting-started/using-extensions/
 - Codex MCP (bearer_token_env_var, codex mcp add --url, codex mcp login; developers.openai.com/codex/mcp redirects here): https://learn.chatgpt.com/docs/extend/mcp?surface=cli
 - Gemini CLI MCP (httpUrl, headers, gemini mcp add --transport http --header): https://geminicli.com/docs/tools/mcp-server/
-- VS Code install-badge URL pattern (insiders.vscode.dev/redirect/mcp/install?name=&inputs=&config=) is community-documented, not on the official page; test the button before publishing.
+- VS Code install badge: https://vscode.dev/redirect/mcp/install?name=&inputs=&config= (opens VS Code via its redirect page).
 -->
