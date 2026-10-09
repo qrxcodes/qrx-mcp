@@ -66,7 +66,7 @@ More examples and fixes: [references/prompt-guide.md](references/prompt-guide.md
 
 - Accounts have a daily allowance of codes (some have no daily limit), and Wi-Fi codes and changing where a code points depend on the account's plan. Call `get_account` to see what is left today, when the count resets and which features the account has; act on the features it reports, not on the plan name.
 - If a call fails with a limit error, or says a feature is not included in the account's plan, call `get_account`, tell the user plainly what is left and when it resets (or that the feature is not included in their plan), and point them to their account at https://qrx.codes. Do not retry in a loop.
-- An authentication error means the API key is missing or wrong; ask the user to create one at https://qrx.codes/developers/keys and set it in the plugin settings.
+- An authentication error means no QRX account is connected. Ask the user to sign in to QRX when their client prompts (or from its MCP or connector settings); a client that cannot sign in can use an API key from https://qrx.codes/developers/keys instead.
 
 ## Links and re-pointing
 

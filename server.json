@@ -3,7 +3,7 @@
   "name": "codes.qrx/mcp",
   "title": "QRX",
   "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "websiteUrl": "https://qrx.codes/developers",
   "repository": {
     "url": "https://github.com/qrxcodes/qrx-mcp",
@@ -14,12 +14,16 @@
     {
       "src": "https://qrx.codes/images/brand/qrx-code-512.png",
       "mimeType": "image/png",
-      "sizes": ["512x512"]
+      "sizes": [
+        "512x512"
+      ]
     },
     {
       "src": "https://qrx.codes/images/brand/qrx-mark.svg",
       "mimeType": "image/svg+xml",
-      "sizes": ["any"]
+      "sizes": [
+        "any"
+      ]
     }
   ],
   "remotes": [
@@ -29,15 +33,15 @@
       "headers": [
         {
           "name": "Authorization",
-          "description": "Your QRX API key from https://qrx.codes/developers/keys, sent as a bearer token.",
+          "description": "Optional. Clients that support MCP sign-in (OAuth) need no header; otherwise send your QRX API key from https://qrx.codes/developers/keys as a bearer token.",
           "value": "Bearer {qrx_api_key}",
-          "isRequired": true,
+          "isRequired": false,
           "isSecret": true,
           "variables": {
             "qrx_api_key": {
               "description": "QRX API key (starts with qrx_). Create one at https://qrx.codes/developers/keys.",
               "placeholder": "qrx_...",
-              "isRequired": true,
+              "isRequired": false,
               "isSecret": true
             }
           }
@@ -50,7 +54,9 @@
       "codes.qrx": {
         "docs": "https://qrx.codes/developers/mcp",
         "llmsTxt": "https://qrx.codes/llms.txt",
-        "auth": ["api-key"],
+        "auth": [
+          "api-key"
+        ],
         "tools": [
           "generate_qr_code",
           "get_qr_code",

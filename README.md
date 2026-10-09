@@ -2,9 +2,9 @@
 
 **Art QR codes that always scan.**
 
-QRX makes branded, print-ready QR codes for posters, menus, packaging and signage. Describe the look you want and give it a link: QRX paints the code into artwork, checks that it decodes before handing it over, and points it at a hosted short link, `https://qrx.to/<id>` on qrx.codes, that you can re-point later on the Starter plan. This repository connects QRX to Claude, Cursor, VS Code and other MCP clients (ChatGPT once sign-in ships) through the remote server at `https://qrx.codes/mcp`.
+QRX makes branded, print-ready QR codes for posters, menus, packaging and signage. Describe the look you want and give it a link: QRX paints the code into artwork, checks that it decodes before handing it over, and points it at a hosted short link, `https://qrx.to/<id>` on qrx.codes, that you can re-point later on the Starter plan. This repository connects QRX to Claude, ChatGPT, Cursor, VS Code and other MCP clients through the remote server at `https://qrx.codes/mcp`.
 
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_QRX-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=qrx&inputs=%5B%7B%22type%22%3A%22promptString%22%2C%22id%22%3A%22qrx-api-key%22%2C%22description%22%3A%22QRX%20API%20key%20%28starts%20with%20qrx_%29%22%2C%22password%22%3Atrue%7D%5D&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fqrx.codes%2Fmcp%22%2C%22headers%22%3A%7B%22Authorization%22%3A%22Bearer%20%24%7Binput%3Aqrx-api-key%7D%22%7D%7D)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_QRX-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=qrx&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fqrx.codes%2Fmcp%22%7D)
 [![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=qrx&config=eyJ1cmwiOiJodHRwczovL3FyeC5jb2Rlcy9tY3AiLCJoZWFkZXJzIjp7IkF1dGhvcml6YXRpb24iOiJCZWFyZXIgJHtlbnY6UVJYX0FQSV9LRVl9In19)
 [![Glama](https://glama.ai/mcp/connectors/codes.qrx/mcp/badges/score.svg)](https://glama.ai/mcp/connectors/codes.qrx/mcp)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
@@ -28,12 +28,16 @@ Listed in the [official MCP Registry](https://registry.modelcontextprotocol.io/)
 |---|---|
 | Server URL | `https://qrx.codes/mcp` |
 | Transport | Streamable HTTP (stateless) |
-| Auth (now) | API key in a header: `Authorization: Bearer qrx_…` (preferred), or `X-API-Key: qrx_…` for clients that can't add the `Bearer ` prefix. If both are sent, `Authorization` wins |
-| Auth (coming) | OAuth sign-in with your QRX account; clients that support MCP OAuth will need only the URL |
-| Without auth | `tools/list` and `list_styles` work; every other tool asks you to connect an account |
+| Auth | Sign in with your QRX account (MCP authorization, OAuth 2.1). Clients that support it need only the URL. The authorization server is `https://clerk.qrx.codes` (dynamic client registration or client ID metadata documents, PKCE S256, refresh tokens); scopes `qrx:read qrx:generate` |
+| Auth with an API key | `Authorization: Bearer qrx_…` (preferred), or `X-API-Key: qrx_…` for clients that can't add the `Bearer ` prefix. If both are sent, `Authorization` wins. For clients without sign-in, scripts and CI |
+| Without auth | `initialize`, `tools/list` and `list_styles` work; every other tool answers `401` with a `WWW-Authenticate` header pointing at `https://qrx.codes/.well-known/oauth-protected-resource/mcp` |
 | Docs | [qrx.codes/developers/mcp](https://qrx.codes/developers/mcp) (public: server URL, client set-up, tools, limits, privacy) |
 
-## Get an API key
+## Sign in or use an API key
+
+Most clients below sign in with your QRX account: add the URL, then sign in (free) when the client asks. There is nothing to copy or keep secret.
+
+For clients that can't sign in, and for scripts and CI, use an API key:
 
 1. Sign in at [qrx.codes](https://qrx.codes) (free).
 2. Open [qrx.codes/developers/keys](https://qrx.codes/developers/keys) and create a key. It starts with `qrx_`.
@@ -63,30 +67,35 @@ Revoke a key at any time from the same page.
 /plugin install qrx@qrx
 ```
 
-When you enable the plugin, Claude Code asks for your QRX API key and keeps it in your system's credential store. The plugin also adds the `qrx` skill, which teaches Claude how to write good art prompts, wait for the code and prepare it for print.
+Then run `/mcp`, select **qrx** and sign in to QRX. The plugin also adds the `qrx` skill, which teaches Claude how to write good art prompts, wait for the code and prepare it for print.
 
 **Option B: MCP server only**
 
 ```bash
-claude mcp add --transport http qrx https://qrx.codes/mcp \
-  --header "Authorization: Bearer $QRX_API_KEY" --scope user
+claude mcp add --transport http qrx https://qrx.codes/mcp --scope user
 ```
 
-Or commit this to a project's `.mcp.json` so the whole team gets it (each person sets their own `QRX_API_KEY`):
+Then run `/mcp`, select **qrx** and sign in. Or commit this to a project's `.mcp.json` so the whole team gets it (each person signs in to their own account):
 
 ```json
 {
   "mcpServers": {
     "qrx": {
       "type": "http",
-      "url": "https://qrx.codes/mcp",
-      "headers": { "Authorization": "Bearer ${QRX_API_KEY}" }
+      "url": "https://qrx.codes/mcp"
     }
   }
 }
 ```
 
-**When OAuth is live:** `claude mcp add --transport http qrx https://qrx.codes/mcp`, then run `/mcp` and sign in.
+**With an API key instead** (for example with `claude -p` or in CI):
+
+```bash
+claude mcp add --transport http qrx https://qrx.codes/mcp \
+  --header "Authorization: Bearer $QRX_API_KEY" --scope user
+```
+
+A configured `Authorization` header replaces sign-in; remove it to sign in instead.
 
 </details>
 
@@ -96,12 +105,12 @@ Or commit this to a project's `.mcp.json` so the whole team gets it (each person
 Claude Desktop uses the same connector settings as claude.ai; you don't edit `claude_desktop_config.json` for a remote server.
 
 1. Open **Customize → Connectors**, select **+ Add**, then **Add custom connector**.
-   On Team and Enterprise, an Owner adds it under **Organization settings → Connectors** first.
+   On Team and Enterprise, an Owner adds it under **Organization settings → Connectors** first, and each member then selects **Connect**.
 2. Name: `QRX`. URL: `https://qrx.codes/mcp`.
-3. Authentication:
-   - **Now:** choose the fixed-credentials option and, under **Request headers**, add `Authorization` with the value `Bearer qrx_live_…`.
-   - **When OAuth is live:** choose **Sign in when needed**; Claude shows a Connect button the first time you make a code.
+3. Authentication: **Sign in when needed**. Claude shows a sign-in prompt in the chat the first time a tool needs your QRX account, then carries on.
 4. Save, then turn QRX on in a chat from the connectors menu.
+
+With an API key instead, choose **No sign-in** and add `Authorization` with the value `Bearer qrx_live_…` under **Request headers** (where your organisation has request headers). Authentication can't be changed after saving; remove the connector and add it again.
 
 Free Claude plans can add one custom connector.
 
@@ -110,23 +119,19 @@ Free Claude plans can add one custom connector.
 <details>
 <summary><b>ChatGPT</b></summary>
 
-ChatGPT's custom MCP servers take OAuth or no authentication, not API keys, so QRX in ChatGPT needs the OAuth release.
-
-**When OAuth is live:**
-
 1. Open [chatgpt.com/plugins](https://chatgpt.com/plugins) on the web, select **+**, then **Add custom MCP server**.
 2. Name: `QRX`. Server URL: `https://qrx.codes/mcp`.
 3. Authentication: **OAuth**. Accept the risk warning and select **Create as a plugin**.
-4. Ask for a QR code; ChatGPT asks you to sign in to QRX the first time.
+4. Sign in to QRX when ChatGPT asks.
 
-Workspace admins can restrict custom MCP servers on Business and Enterprise plans.
+ChatGPT's custom MCP servers don't take API keys. Workspace admins can restrict custom MCP servers on Business and Enterprise plans.
 
 </details>
 
 <details>
 <summary><b>Cursor</b></summary>
 
-Use the **Install in Cursor** button above, or add this to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` (one project):
+Cursor doesn't yet prompt for QRX sign-in, so use an API key. Use the **Install in Cursor** button above, or add this to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` (one project):
 
 ```json
 {
@@ -139,14 +144,33 @@ Use the **Install in Cursor** button above, or add this to `~/.cursor/mcp.json` 
 }
 ```
 
-**When OAuth is live:** drop the `headers` block; Cursor prompts you to sign in.
-
 </details>
 
 <details>
 <summary><b>VS Code (GitHub Copilot)</b></summary>
 
-Use the **Install in VS Code** button above (it asks for your key and stores it securely), or add this to `.vscode/mcp.json`:
+Use the **Install in VS Code** button above, or add this to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "qrx": {
+      "type": "http",
+      "url": "https://qrx.codes/mcp"
+    }
+  }
+}
+```
+
+From a terminal:
+
+```bash
+code --add-mcp '{"name":"qrx","type":"http","url":"https://qrx.codes/mcp"}'
+```
+
+VS Code opens a browser to sign in to QRX the first time a tool needs your account.
+
+With an API key instead (VS Code asks for it and stores it securely):
 
 ```json
 {
@@ -167,14 +191,6 @@ Use the **Install in VS Code** button above (it asks for your key and stores it 
   }
 }
 ```
-
-From a terminal:
-
-```bash
-code --add-mcp '{"name":"qrx","type":"http","url":"https://qrx.codes/mcp","headers":{"Authorization":"Bearer ${input:qrx-api-key}"},"inputs":[{"type":"promptString","id":"qrx-api-key","description":"QRX API key","password":true}]}'
-```
-
-**When OAuth is live:** `{"type": "http", "url": "https://qrx.codes/mcp"}` is enough.
 
 </details>
 
@@ -217,7 +233,7 @@ Open **MCP Servers → Configure MCP Servers** and add to `cline_mcp_settings.js
 }
 ```
 
-**When OAuth is live:** remove `headers` and use **Authorize OAuth** on the server.
+In the Cline CLI you can sign in instead: leave out `headers`, run `cline mcp`, choose **qrx** and **Authorize OAuth**.
 
 </details>
 
@@ -230,21 +246,20 @@ Add to `settings.json`:
 {
   "context_servers": {
     "qrx": {
-      "url": "https://qrx.codes/mcp",
-      "headers": { "Authorization": "Bearer qrx_live_…" }
+      "url": "https://qrx.codes/mcp"
     }
   }
 }
 ```
 
-**When OAuth is live:** leave out `headers`; Zed runs the MCP sign-in flow when no `Authorization` header is set.
+Zed asks you to authenticate the first time a tool needs your QRX account. With an API key instead, add `"headers": { "Authorization": "Bearer qrx_live_…" }`; Zed then skips sign-in.
 
 </details>
 
 <details>
 <summary><b>Goose</b></summary>
 
-Run `goose configure` → **Add Extension** → **Remote Extension (Streamable HTTP)**, enter `https://qrx.codes/mcp`, and add the header `Authorization: Bearer qrx_live_…`. Or edit `config.yaml` (macOS/Linux `~/.config/goose/config.yaml`, Windows `%APPDATA%\Block\goose\config\config.yaml`):
+Run `goose configure` → **Add Extension** → **Remote Extension (Streamable HTTP)** and enter `https://qrx.codes/mcp`. Or edit `config.yaml` (macOS/Linux `~/.config/goose/config.yaml`, Windows `%APPDATA%\Block\goose\config\config.yaml`):
 
 ```yaml
 extensions:
@@ -253,25 +268,28 @@ extensions:
     type: streamable_http
     enabled: true
     uri: https://qrx.codes/mcp
-    headers:
-      Authorization: "Bearer qrx_live_…"
     timeout: 300
 ```
+
+Goose opens your browser to sign in the first time a tool needs your QRX account. With an API key instead, add the header `Authorization: Bearer qrx_live_…` (`headers:` in `config.yaml`).
 
 </details>
 
 <details>
 <summary><b>OpenAI Codex CLI</b></summary>
 
-Add to `~/.codex/config.toml`:
+```bash
+codex mcp add qrx --url https://qrx.codes/mcp
+```
+
+Codex finds QRX's sign-in and opens your browser. Run `codex mcp login qrx` to sign in again later. The entry in `~/.codex/config.toml` is just:
 
 ```toml
 [mcp_servers.qrx]
 url = "https://qrx.codes/mcp"
-bearer_token_env_var = "QRX_API_KEY"
 ```
 
-**When OAuth is live:** `codex mcp add qrx --url https://qrx.codes/mcp`, then `codex mcp login qrx`.
+With an API key instead, add `bearer_token_env_var = "QRX_API_KEY"` to that entry.
 
 </details>
 
@@ -279,17 +297,40 @@ bearer_token_env_var = "QRX_API_KEY"
 <summary><b>Gemini CLI</b></summary>
 
 ```bash
-gemini mcp add --transport http --header "Authorization: Bearer $QRX_API_KEY" qrx https://qrx.codes/mcp
+gemini mcp add --transport http -s user qrx https://qrx.codes/mcp
 ```
 
-Or in `~/.gemini/settings.json` (note `httpUrl`, which selects Streamable HTTP):
+Then run `/mcp auth qrx` in Gemini CLI and sign in. Or in `~/.gemini/settings.json` (note `httpUrl`, which selects Streamable HTTP):
 
 ```json
 {
   "mcpServers": {
     "qrx": {
-      "httpUrl": "https://qrx.codes/mcp",
-      "headers": { "Authorization": "Bearer $QRX_API_KEY" }
+      "httpUrl": "https://qrx.codes/mcp"
+    }
+  }
+}
+```
+
+With an API key instead:
+
+```bash
+gemini mcp add --transport http -s user --header "Authorization: Bearer $QRX_API_KEY" qrx https://qrx.codes/mcp
+```
+
+</details>
+
+<details>
+<summary><b>LM Studio</b></summary>
+
+In the **Program** tab, choose **Install → Edit mcp.json** and add:
+
+```json
+{
+  "mcpServers": {
+    "qrx": {
+      "url": "https://qrx.codes/mcp",
+      "headers": { "Authorization": "Bearer qrx_live_…" }
     }
   }
 }
@@ -317,14 +358,14 @@ The skill expects the QRX MCP server to be connected (see your client above), or
 gemini extensions install https://github.com/qrxcodes/qrx-mcp
 ```
 
-The extension asks for your QRX API key and stores it in your system keychain.
+Then run `/mcp auth qrx` in Gemini CLI and sign in.
 
 </details>
 
 <details>
 <summary><b>Any other MCP client</b></summary>
 
-Point a Streamable HTTP client at `https://qrx.codes/mcp` and send `Authorization: Bearer qrx_…` (or `X-API-Key: qrx_…`). Clients that only speak stdio can use a bridge such as [`mcp-remote`](https://www.npmjs.com/package/mcp-remote):
+Clients that support MCP authorization need only `https://qrx.codes/mcp`: they sign in when a tool answers `401`. Otherwise point a Streamable HTTP client at the URL and send `Authorization: Bearer qrx_…` (or `X-API-Key: qrx_…`). Clients that only speak stdio can use a bridge such as [`mcp-remote`](https://www.npmjs.com/package/mcp-remote):
 
 ```json
 {
@@ -396,7 +437,7 @@ None of these files run code on your machine. They only point your client at `ht
 
 ## Data and network use
 
-Clients send requests only to `https://qrx.codes/mcp` (and, when the skill falls back to the REST API, to `https://qrx.codes/v1`). Each request carries your API key and the prompt, destination link and style you asked for. A finished code's `imageUrl` is on `https://qrx.codes/media/`, which redirects to QRX's image CDN.
+Clients send requests only to `https://qrx.codes/mcp` (and, when the skill falls back to the REST API, to `https://qrx.codes/v1`). Each request carries your sign-in token or API key and the prompt, destination link and style you asked for. Signing in goes through QRX's sign-in service at `https://clerk.qrx.codes`. A finished code's `imageUrl` is on `https://qrx.codes/media/`, which redirects to QRX's image CDN.
 
 ## Privacy, terms and support
 
@@ -412,21 +453,26 @@ QRX stores the prompts, links and images you create so they appear in your accou
 The configuration files, skill and documentation in this repository are released under the [MIT licence](LICENSE). The QRX service itself is a hosted product, governed by the [QRX terms](https://qrx.codes/terms).
 
 <!--
-Docs sources (re-check these when clients change; all read 8 Oct 2026):
-- Claude Code MCP (claude mcp add --header, .mcp.json ${VAR} expansion, /mcp OAuth): https://code.claude.com/docs/en/mcp
-- Claude custom connectors (Request headers fixed credentials, OAuth "Sign in when needed", Free = 1 connector): https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp
+Docs sources (re-check these when clients change; all read 9 Oct 2026):
+- Claude Code MCP (claude mcp add --header, .mcp.json ${VAR} expansion; OAuth via /mcp; a configured Authorization header disables OAuth): https://code.claude.com/docs/en/mcp
+- Claude Code plugins (plugin .mcp.json): https://code.claude.com/docs/en/plugins-reference
+- Claude custom connectors (Sign in when needed / No sign-in, Request headers, Free = 1 connector): https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp
+- Claude lazy authentication (sign-in on a tool call 401 with WWW-Authenticate): https://claude.com/docs/connectors/building/lazy-authentication
 - ChatGPT custom MCP server (auth: OAuth / No authentication / mixed; no API key option; web only): https://developers.openai.com/api/docs/guides/custom-mcp-server
-- ChatGPT plugins testing: https://developers.openai.com/plugins/deploy/connect-chatgpt.md
-- Cursor mcp.json (url, headers, ${env:VAR}): https://cursor.com/docs/context/mcp
+- ChatGPT plugins auth: https://developers.openai.com/apps-sdk/build/auth
+- Cursor mcp.json (url, headers, ${env:VAR}, OAuth): https://cursor.com/docs/context/mcp
+- Cursor runtime OAuth only on a 401 at initialize (staff reply): https://forum.cursor.com/t/170058
 - Cursor install links (https://cursor.com/install-mcp?name=&config=<base64>, which hands off to cursor://anysphere.cursor-deeplink/mcp/install): https://cursor.com/docs/context/mcp/install-links
-- VS Code MCP servers (type http, headers, ${input:}): https://code.visualstudio.com/docs/copilot/customization/mcp-servers
+- VS Code MCP servers (type http, headers, ${input:}, OAuth with DCR or CIMD): https://code.visualstudio.com/docs/copilot/customization/mcp-servers
 - VS Code MCP configuration reference (inputs is an array of {type,id,description,password}): https://code.visualstudio.com/docs/copilot/reference/mcp-configuration
 - Windsurf / Devin Desktop MCP (serverUrl, headers, ${env:}, config paths; docs.windsurf.com now redirects here): https://docs.devin.ai/desktop/cascade/mcp
-- Cline MCP (type streamableHttp, headers, Authorize OAuth): https://docs.cline.bot/mcp/configuring-mcp-servers
+- Cline MCP (type streamableHttp, headers, CLI Authorize OAuth): https://docs.cline.bot/mcp/configuring-mcp-servers
 - Zed MCP (context_servers url + headers; OAuth when no Authorization header): https://zed.dev/docs/ai/mcp
-- Goose config files (type streamable_http, uri, headers, paths): https://goose-docs.ai/docs/guides/config-files/
+- Goose config files (type streamable_http, uri, headers, paths, OAuth): https://goose-docs.ai/docs/guides/config-files/
 - Goose using extensions: https://goose-docs.ai/docs/getting-started/using-extensions/
-- Codex MCP (bearer_token_env_var, codex mcp add --url, codex mcp login; developers.openai.com/codex/mcp redirects here): https://learn.chatgpt.com/docs/extend/mcp?surface=cli
-- Gemini CLI MCP (httpUrl, headers, gemini mcp add --transport http --header): https://geminicli.com/docs/tools/mcp-server/
-- VS Code install badge: https://vscode.dev/redirect/mcp/install?name=&inputs=&config= (opens VS Code via its redirect page).
+- Codex MCP (codex mcp add --url, OAuth by default, codex mcp login, bearer_token_env_var; developers.openai.com/codex/mcp redirects here): https://learn.chatgpt.com/docs/extend/mcp?surface=cli
+- Gemini CLI MCP (httpUrl, headers, gemini mcp add --transport http, /mcp auth): https://geminicli.com/docs/tools/mcp-server/
+- Gemini CLI extensions (settings, header expansion): https://geminicli.com/docs/extensions/reference/
+- LM Studio MCP (mcp.json url + headers): https://lmstudio.ai/docs/app/mcp
+- VS Code install badge: https://vscode.dev/redirect/mcp/install?name=&config= (opens VS Code via its redirect page).
 -->

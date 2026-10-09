@@ -1,7 +1,7 @@
 {
   "name": "qrx",
   "displayName": "QRX",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Branded, print-ready art QR codes that always scan. Describe a picture and a link; QRX paints the code, verifies it decodes, and hosts it on a qrx.to short link.",
   "author": {
     "name": "QRX",
@@ -16,14 +16,5 @@
   "documentationUrl": "https://qrx.codes/developers/mcp",
   "supportUrl": "https://qrx.codes/developers",
   "privacyPolicyUrl": "https://qrx.codes/privacy",
-  "termsOfServiceUrl": "https://qrx.codes/terms",
-  "userConfig": {
-    "qrx_api_key": {
-      "type": "string",
-      "title": "QRX API key",
-      "description": "An API key from https://qrx.codes/developers/keys (starts with qrx_). Stored in your system's secure credential store.",
-      "sensitive": true,
-      "required": true
-    }
-  }
+  "termsOfServiceUrl": "https://qrx.codes/terms"
 }
