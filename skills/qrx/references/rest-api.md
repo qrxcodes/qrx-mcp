@@ -1,6 +1,6 @@
 # QRX REST API fallback
 
-Use this only when the QRX MCP tools are not connected. Requires an API key from https://qrx.codes/developers/keys, read from the environment variable `QRX_API_KEY`. Never print the key.
+Use this only when the QRX MCP tools are not connected (connecting the MCP server needs sign-in or an API key; prefer signing in). Requires an API key from https://qrx.codes/developers/keys, read from the environment variable `QRX_API_KEY`. Never print the key.
 
 Base URL: `https://qrx.codes/v1`. The OpenAPI 3.1 spec is at `https://qrx.codes/v1/openapi.json`, and the reference is at https://qrx.codes/developers/docs/reference (append `.md` to any docs page for Markdown). None of these need a key.
 

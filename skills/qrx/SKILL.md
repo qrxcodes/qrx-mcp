@@ -1,6 +1,6 @@
 ---
 name: qrx
-description: Makes branded, print-ready art QR codes that always scan, using QRX (qrx.codes). Use when the user wants a QR code for a link (or Wi-Fi) that looks like artwork, matches a brand, or will be printed on a poster, menu, flyer, packaging, sign, business card, slide or event badge; also to list, check or re-point existing QRX codes. Not for plain black-and-white QR codes the agent can make locally.
+description: Makes branded, print-ready art QR codes that always scan, using QRX (qrx.codes). Use when the user wants a QR code for a link that looks like artwork, matches a brand, or will be printed on a poster, menu, flyer, packaging, sign, business card, slide or event badge; also to list, check or re-point existing QRX codes. Not for plain black-and-white QR codes the agent can make locally.
 license: MIT
 compatibility: Needs network access and the QRX MCP server (https://qrx.codes/mcp) or a QRX API key for the REST API.
 metadata:
@@ -27,7 +27,7 @@ Do not use it when:
 | Tool | Use |
 | - | - |
 | `list_styles` | List style ids and names. |
-| `generate_qr_code` | Start a code. Args: `prompt` (required, up to 1,000 characters), `destination` (an absolute `http` or `https` URL, up to 2,048 characters) **or** `wifi` (`ssid`, `password`, `security` `wpa` or `wep`; only if the account's plan includes Wi-Fi codes), optional `style`. Answers at once with the code's `id` and `status: processing`. |
+| `generate_qr_code` | Start a code. Args: `prompt` (required, up to 1,000 characters), `destination` (required, an absolute `http` or `https` URL, up to 2,048 characters), optional `style`. Answers at once with the code's `id` and `status: processing`. |
 | `get_qr_code` | Get a code by `id`. Waits up to `wait` seconds (0 to 25, default 25) for a processing code to finish. Call again while it is still `processing`. |
 | `list_qr_codes` | The user's codes, newest first. `limit` 1 to 100 (default 20); pass `nextCursor` as `cursor` for the next page. |
 | `change_qr_code_destination` | Re-point a link code's short link to a new destination (`id`, `destination`: an absolute `http` or `https` URL). Printed codes follow at once. Only if the account's plan allows changing destinations; it replaces the old destination, so confirm with the user first. |
@@ -38,7 +38,7 @@ The server needs the user to sign in to QRX (or an API key) before it connects. 
 
 ## How to make a code
 
-1. **Get the destination.** It must be an absolute URL starting with `https://` or `http://` (add `https://` if the user gave a bare domain, and confirm the exact link if it is ambiguous). For Wi-Fi codes you need the network name and password, and the account's plan must include Wi-Fi codes (`get_account` shows whether it does). Wi-Fi codes have no short link and cannot be re-pointed.
+1. **Get the destination.** It must be an absolute URL starting with `https://` or `http://` (add `https://` if the user gave a bare domain, and confirm the exact link if it is ambiguous). The MCP tools make link codes only; for a Wi-Fi code, send the user to https://qrx.codes, and never ask them for a Wi-Fi password.
 2. **Write the prompt** (see "Writing a good prompt"). If the user named a look, call `list_styles` and pick the closest style id; otherwise leave `style` out.
 3. **Call `generate_qr_code` once.** Keep the returned `id`; it never changes. Painting usually takes under a minute.
 4. **Poll with `get_qr_code`** using that `id` until `status` is `succeeded` or `failed`. Each call waits up to 25 seconds, so two or three calls are normal.
@@ -64,7 +64,7 @@ More examples and fixes: [references/prompt-guide.md](references/prompt-guide.md
 
 ## Limits
 
-- Accounts have a daily allowance of codes (some have no daily limit), and Wi-Fi codes and changing where a code points depend on the account's plan. Call `get_account` to see what is left today, when the count resets and which features the account has; act on the features it reports, not on the plan name.
+- Accounts have a daily allowance of codes (some have no daily limit), and changing where a code points depends on the account's plan. Call `get_account` to see what is left today, when the count resets and which features the account has; act on the features it reports, not on the plan name.
 - If a call fails with a limit error, or says a feature is not included in the account's plan, call `get_account`, tell the user plainly what is left and when it resets (or that the feature is not included in their plan), and point them to their account at https://qrx.codes. Do not retry in a loop.
 - An authentication error means no QRX account is connected. Ask the user to sign in to QRX when their client prompts (or from its MCP or connector settings); a client that cannot sign in can use an API key from https://qrx.codes/developers/keys instead.
 
