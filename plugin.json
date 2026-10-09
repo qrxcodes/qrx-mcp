@@ -1,0 +1,11 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "qrx",
+  "version": "1.1.0",
+  "description": "Branded, print-ready art QR codes from a prompt and a link, each verified to scan, with hosted qrx.to short links.",
+  "author": { "name": "QRX", "email": "hello@qrx.codes", "url": "https://qrx.codes" },
+  "homepage": "https://qrx.codes/developers/mcp",
+  "repository": "https://github.com/qrxcodes/qrx-mcp",
+  "license": "MIT",
+  "keywords": ["qr-code", "design", "branding", "print", "marketing", "mcp"]
+}
