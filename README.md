@@ -365,14 +365,14 @@ Then run `/mcp auth qrx` in Gemini CLI and sign in.
 <details>
 <summary><b>Any other MCP client</b></summary>
 
-Clients that support MCP authorization need only `https://qrx.codes/mcp`: they sign in when a tool answers `401`. Otherwise point a Streamable HTTP client at the URL and send `Authorization: Bearer qrx_…` (or `X-API-Key: qrx_…`). Clients that only speak stdio can use a bridge such as [`mcp-remote`](https://www.npmjs.com/package/mcp-remote):
+Clients that support MCP authorization need only `https://qrx.codes/mcp`: they sign in when a tool answers `401`. Otherwise point a Streamable HTTP client at the URL and send `Authorization: Bearer qrx_…` (or `X-API-Key: qrx_…`). Clients that only run local stdio servers can use [`@qrxcodes/mcp`](https://github.com/qrxcodes/mcp), which forwards to the same server with your API key:
 
 ```json
 {
   "mcpServers": {
     "qrx": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://qrx.codes/mcp", "--header", "Authorization:Bearer ${QRX_API_KEY}"],
+      "args": ["-y", "@qrxcodes/mcp"],
       "env": { "QRX_API_KEY": "qrx_live_…" }
     }
   }

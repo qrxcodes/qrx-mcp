@@ -3,7 +3,7 @@
   "name": "codes.qrx/mcp",
   "title": "QRX",
   "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "websiteUrl": "https://qrx.codes/developers",
   "repository": {
     "url": "https://github.com/qrxcodes/qrx-mcp",
@@ -23,6 +23,28 @@
       "mimeType": "image/svg+xml",
       "sizes": [
         "any"
+      ]
+    }
+  ],
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "@qrxcodes/mcp",
+      "version": "1.0.0",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "QRX_API_KEY",
+          "description": "Your QRX API key (starts with qrx_). Create one at https://qrx.codes/developers/keys. Without it, only tool discovery and list_styles work.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string",
+          "placeholder": "qrx_..."
+        }
       ]
     }
   ],

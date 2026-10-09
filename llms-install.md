@@ -57,7 +57,7 @@ Add this entry to `cline_mcp_settings.json` (open it from the MCP Servers panel 
 | Codex CLI | terminal | `codex mcp add qrx --url https://qrx.codes/mcp` (opens sign-in) |
 | Gemini CLI | terminal | `gemini mcp add --transport http -s user qrx https://qrx.codes/mcp`, then `/mcp auth qrx` |
 | Kiro | `.kiro/settings/mcp.json` | `{"mcpServers":{"qrx":{"type":"http","url":"https://qrx.codes/mcp","headers":{"Authorization":"Bearer ${ QRX_API_KEY }"}}}}` |
-| stdio-only clients | any | `npx -y mcp-remote https://qrx.codes/mcp --header "Authorization:${QRX_API_KEY}"`, with env `QRX_API_KEY="Bearer qrx_…"` |
+| stdio-only clients | any | `npx -y @qrxcodes/mcp`, with env `QRX_API_KEY="qrx_…"` |
 
 ## Step 3: Verify
 
