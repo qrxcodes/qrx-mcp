@@ -3,7 +3,7 @@
   "name": "codes.qrx/mcp",
   "title": "QRX",
   "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "websiteUrl": "https://qrx.codes/developers",
   "repository": {
     "url": "https://github.com/qrxcodes/qrx-mcp",
