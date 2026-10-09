@@ -26,7 +26,7 @@ Do not use it when:
 
 | Tool | Use |
 | - | - |
-| `list_styles` | List style ids and names. Works without signing in. |
+| `list_styles` | List style ids and names. |
 | `generate_qr_code` | Start a code. Args: `prompt` (required, up to 1,000 characters), `destination` (an absolute `http` or `https` URL, up to 2,048 characters) **or** `wifi` (`ssid`, `password`, `security` `wpa` or `wep`; only if the account's plan includes Wi-Fi codes), optional `style`. Answers at once with the code's `id` and `status: processing`. |
 | `get_qr_code` | Get a code by `id`. Waits up to `wait` seconds (0 to 25, default 25) for a processing code to finish. Call again while it is still `processing`. |
 | `list_qr_codes` | The user's codes, newest first. `limit` 1 to 100 (default 20); pass `nextCursor` as `cursor` for the next page. |
@@ -34,7 +34,7 @@ Do not use it when:
 | `get_account` | The plan, today's allowance, what is left, when it resets, and which features the account has (Wi-Fi codes, changing destinations). |
 | `get_profile` | The connected QRX account. |
 
-If the tools are missing, the QRX MCP server is not connected; use the REST API instead (see [references/rest-api.md](references/rest-api.md)).
+The server needs the user to sign in to QRX (or an API key) before it connects. If the tools are missing, it is not connected: ask the user to sign in from their client's MCP or connector settings, or use the REST API instead (see [references/rest-api.md](references/rest-api.md)).
 
 ## How to make a code
 

@@ -39,7 +39,7 @@
       "environmentVariables": [
         {
           "name": "QRX_API_KEY",
-          "description": "Your QRX API key (starts with qrx_). Create one at https://qrx.codes/developers/keys. Without it, only tool discovery and list_styles work.",
+          "description": "Your QRX API key (starts with qrx_). Create one at https://qrx.codes/developers/keys. The server needs it to connect.",
           "isRequired": true,
           "isSecret": true,
           "format": "string",
@@ -55,7 +55,7 @@
       "headers": [
         {
           "name": "Authorization",
-          "description": "Optional. Clients that support MCP sign-in (OAuth) need no header; otherwise send your QRX API key from https://qrx.codes/developers/keys as a bearer token.",
+          "description": "Optional. Connecting needs sign-in or an API key. Clients that support MCP sign-in (OAuth) need no header; otherwise send your QRX API key from https://qrx.codes/developers/keys as a bearer token.",
           "value": "Bearer {qrx_api_key}",
           "isRequired": false,
           "isSecret": true,
