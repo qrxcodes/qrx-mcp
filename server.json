@@ -3,7 +3,7 @@
   "name": "codes.qrx/mcp",
   "title": "QRX",
   "description": "Turn a prompt and a link into a branded, print-ready QR code that always scans.",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "websiteUrl": "https://qrx.codes/developers",
   "repository": {
     "url": "https://github.com/qrxcodes/qrx-mcp",
@@ -39,8 +39,8 @@
       "environmentVariables": [
         {
           "name": "QRX_API_KEY",
-          "description": "Your QRX API key (starts with qrx_). Create one at https://qrx.codes/developers/keys. The server needs it to connect.",
-          "isRequired": true,
+          "description": "Your QRX API key (qrx_…) from https://qrx.codes/developers/keys. Needed to use the tools; without it the server starts and lists them.",
+          "isRequired": false,
           "isSecret": true,
           "format": "string",
           "placeholder": "qrx_..."
