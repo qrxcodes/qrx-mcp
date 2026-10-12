@@ -2,7 +2,7 @@
 
 **Art QR codes that always scan.**
 
-QRX makes branded, print-ready QR codes for posters, menus, packaging and signage. Describe the look you want and give it a link: QRX paints the code into artwork, checks that it decodes before handing it over, and points it at a hosted short link, `https://qrx.to/<id>` on qrx.codes, that you can re-point later on the Starter plan. This repository connects QRX to Claude, ChatGPT, Cursor, VS Code and other MCP clients through the remote server at `https://qrx.codes/mcp`.
+QRX makes branded, print-ready QR codes for posters, menus, packaging and signage. Describe the look you want and give it a link: QRX paints the code into artwork, checks that it decodes before handing it over, and points it at a hosted short link, `https://qrx.to/<id>` on qrx.codes, that you can re-point later on a paid plan. This repository connects QRX to Claude, ChatGPT, Cursor, VS Code and other MCP clients through the remote server at `https://qrx.codes/mcp`.
 
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_QRX-0098FF?logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=qrx&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fqrx.codes%2Fmcp%22%7D)
 [![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=qrx&config=eyJ1cmwiOiJodHRwczovL3FyeC5jb2Rlcy9tY3AifQ%3D%3D)
@@ -19,7 +19,7 @@ Listed in the [official MCP Registry](https://registry.modelcontextprotocol.io/)
 - **Make a code:** "Make a QR code for https://example.com/menu that looks like a watercolour café street."
 - **Check on it:** generation usually takes under a minute; the agent waits for it and returns the image and short link.
 - **Find old codes:** list the codes on your account, newest first.
-- **Re-point a code:** send an existing printed code to a new link, with no reprint (Starter plan).
+- **Re-point a code:** send an existing printed code to a new link, with no reprint (on a paid plan).
 - **Check your allowance:** see how many codes you have left today.
 
 ## Connection details
@@ -401,10 +401,10 @@ Connecting needs sign-in or an API key. The tool list is public at [`https://qrx
 
 | Tool | What it does | Read-only |
 |---|---|---|
-| `generate_qr_code` | Starts a new art QR code from a prompt and a link (or Wi-Fi details on Starter). Returns the code's id straight away. | No |
+| `generate_qr_code` | Starts a new art QR code from a prompt and a link. Returns the code's id straight away. | No |
 | `get_qr_code` | Gets a code's status, image and short link. Waits up to `wait` seconds (0 to 25, default 25) for a code that's still being painted. | Yes |
 | `list_qr_codes` | Lists your codes, newest first, a page at a time (`limit` 1 to 100, default 20; pass `nextCursor` as `cursor`). | Yes |
-| `change_qr_code_destination` | Points an existing link code at a new absolute http or https URL (Starter plan). The printed code keeps working. Marked destructive, because it replaces the old destination. | No |
+| `change_qr_code_destination` | Points an existing link code at a new absolute http or https URL (on a paid plan). The printed code keeps working. Marked destructive, because it replaces the old destination. | No |
 | `get_account` | Shows your plan, how many codes are left today, when the count resets and what the account can do. | Yes |
 | `get_profile` | Shows which QRX account is connected. | Yes |
 | `list_styles` | Lists the looks you can pass to `generate_qr_code`. | Yes |
@@ -431,12 +431,9 @@ In clients that show interactive views (MCP Apps), such as Claude, the code also
 
 ## Plans and limits
 
-| Plan | Codes | Re-point links | Wi-Fi codes |
-|---|---|---|---|
-| Free | 42 a day | No | No |
-| Starter, US$20 a month | No daily limit | Yes | Yes |
+A free account has a daily allowance of codes; a paid plan has more, and lets you re-point links. Current plans are at https://qrx.codes/upgrade.
 
-The API, the MCP server and the website share one allowance. Each key is also rate limited (30 requests a minute and 6 new codes per 10 seconds). If you hit a limit the tool returns an error; `get_account` shows what is left and when the daily count resets. Plans: https://qrx.codes/upgrade. Limits: [qrx.codes/developers](https://qrx.codes/developers#limits).
+The API, the MCP server and the website share one allowance. Each key is also rate limited (30 requests a minute and 6 new codes per 10 seconds). If you hit a limit the tool returns an error; `get_account` shows what is left and when the daily count resets. Limits: [qrx.codes/developers](https://qrx.codes/developers#limits).
 
 ## What this repository contains
 
