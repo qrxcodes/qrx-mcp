@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'claude-code/testing'
 
 import { codeOf, isCodeTool } from './lib/code.ts'
+import { MAX_IMAGE_BASE64, fullQualityUrl, pictureKind } from './lib/picture.ts'
 import { decodePng, encodePng, shrink } from './lib/png.ts'
 
 const TOOL = 'mcp__plugin_qrx_qrx__get_qr_code'
@@ -69,6 +70,30 @@ test('a PNG written by the card reads back the same', () => {
   const image = { width: 4, height: 3, data }
   expect(Array.from(decodePng(encodePng(image)).data)).toEqual(Array.from(data))
   expect(shrink(image, 2, 1).data.length).toBe(6)
+})
+
+describe('the full-quality link', () => {
+  const code = { id: 'ab12cd', status: 'succeeded' as const, imageUrl: ready.imageUrl, pageUrl: ready.pageUrl }
+
+  test('shows under a picture drawn in cells, in terminals without kitty graphics', () => {
+    const kind = pictureKind('terminal', false, 1000)
+    expect(kind).toBe('cells')
+    expect(fullQualityUrl(kind, code)).toBe(ready.imageUrl)
+    expect(fullQualityUrl(kind, { ...code, imageUrl: undefined })).toBe(ready.pageUrl)
+  })
+
+  test('is left off where the picture has real pixels: kitty and Ghostty, the Desktop app and the editor', () => {
+    expect(pictureKind('terminal', true, 1000)).toBe('pixels')
+    expect(fullQualityUrl('pixels', code)).toBeUndefined()
+    for (const surface of ['desktop', 'vscode', 'mobile']) {
+      expect(pictureKind(surface, false, 1000)).toBe('svg')
+      expect(fullQualityUrl(pictureKind(surface, true, 1000), code)).toBeUndefined()
+    }
+  })
+
+  test('shows in kitty too when the PNG is too large to draw as pixels', () => {
+    expect(fullQualityUrl(pictureKind('terminal', true, MAX_IMAGE_BASE64 + 1), code)).toBe(ready.imageUrl)
+  })
 })
 
 describe('the card', () => {
