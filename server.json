@@ -82,6 +82,7 @@
         ],
         "tools": [
           "generate_qr_code",
+          "vary_qr_code",
           "get_qr_code",
           "list_qr_codes",
           "change_qr_code_destination",

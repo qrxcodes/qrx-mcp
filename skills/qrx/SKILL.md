@@ -1,6 +1,6 @@
 ---
 name: qrx
-description: Makes branded, print-ready art QR codes that always scan, using QRX (qrx.codes). Use when the user wants a QR code for a link that looks like artwork, matches a brand, or will be printed on a poster, menu, flyer, packaging, sign, business card, slide or event badge; also to list, check or re-point existing QRX codes. Not for plain black-and-white QR codes the agent can make locally.
+description: Makes branded, print-ready art QR codes that always scan, using QRX (qrx.codes). Use when the user wants a QR code for a link that looks like artwork, matches a brand, or will be printed on a poster, menu, flyer, packaging, sign, business card, slide or event badge; also to list, check, vary or re-point existing QRX codes. Not for plain black-and-white QR codes the agent can make locally.
 license: MIT
 compatibility: Needs network access and the QRX MCP server (https://qrx.codes/mcp) or a QRX API key for the REST API.
 metadata:
@@ -19,7 +19,6 @@ Use it when the user wants a QR code that is also a picture: on-brand, decorativ
 
 Do not use it when:
 - a plain, unstyled QR code will do and can be made locally (offer QRX only if the user wants something designed);
-- the user wants to change the art of an existing code (make a new code instead);
 - the request is for a logo, trademark or character the user does not own (see "What not to do").
 
 ## Tools (QRX MCP server)
@@ -28,6 +27,7 @@ Do not use it when:
 | - | - |
 | `list_styles` | List style ids and names. |
 | `generate_qr_code` | Start a code. Args: `prompt` (required, up to 1,000 characters), `destination` (required, an absolute `http` or `https` URL, up to 2,048 characters), optional `style`. Answers at once with the code's `id` and `status: processing`. |
+| `vary_qr_code` | Make a new code from one of the user's link codes with a change to its picture. Args: `id`, `change` (required, up to 500 characters, e.g. "more trees"). The new code has its own `id` and short link to the same destination; the original does not change. Answers at once like `generate_qr_code`; poll the new `id`. |
 | `get_qr_code` | Get a code by `id`. Waits up to `wait` seconds (0 to 25, default 25) for a processing code to finish. Call again while it is still `processing`. |
 | `list_qr_codes` | The user's codes, newest first. `limit` 1 to 100 (default 20); pass `nextCursor` as `cursor` for the next page. |
 | `change_qr_code_destination` | Re-point a link code's short link to a new destination (`id`, `destination`: an absolute `http` or `https` URL). Printed codes follow at once. Only if the account's plan allows changing destinations; it replaces the old destination, so confirm with the user first. |
@@ -45,6 +45,8 @@ The server needs the user to sign in to QRX (or an API key) before it connects. 
    - Never call `generate_qr_code` again while a code is still processing: every generate counts against the user's allowance.
 5. **Show the result:** the image (`imageUrl`, a PNG), the short link the code encodes (`shortUrl`, `https://qrx.to/<id>` on qrx.codes), the destination, and the code's page (`pageUrl`). Tell the user to test-scan it with a phone before printing.
 6. **On `failed`:** read `error.message`, simplify the prompt (fewer elements, more contrast), and offer one retry. Ask before making more than one extra attempt.
+
+To change the picture of an existing code, call `vary_qr_code` with its `id` and the change, then poll the new `id`. The original code and its short link stay as they are.
 
 For several variations, say how many will be made and that each counts against the allowance, then start them and poll each `id`.
 

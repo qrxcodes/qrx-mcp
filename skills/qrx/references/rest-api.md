@@ -33,6 +33,7 @@ Repeat until `status` is `succeeded` or `failed`. A finished code has `imageUrl`
 | Method and path | Purpose |
 | - | - |
 | `GET /v1/codes?limit=10&cursor=...` | List codes, newest first (`nextCursor` for the next page) |
+| `POST /v1/codes/{id}/variations` with `{"change":"more trees"}` | Make a new code from one of yours with a change to its picture; answers like a create (send an `Idempotency-Key`, use `?wait=45`) |
 | `PATCH /v1/codes/{id}` with `{"destination":"https://..."}` | Re-point a link code (only if the account's plan allows changing destinations) |
 | `GET /v1/account` | Plan, allowance, features and limits |
 | `GET /v1/styles` | Style ids, names and preview images |

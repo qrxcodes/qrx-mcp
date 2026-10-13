@@ -63,7 +63,7 @@ With an API key instead of sign-in, add the header `Authorization: Bearer qrx_�
 
 ## Step 3: Verify
 
-1. Reload the MCP servers. Without a key, Cline asks the user to sign in to QRX; once they have, QRX should connect and list seven tools: `generate_qr_code`, `get_qr_code`, `list_qr_codes`, `change_qr_code_destination`, `get_account`, `get_profile`, `list_styles`.
+1. Reload the MCP servers. Without a key, Cline asks the user to sign in to QRX; once they have, QRX should connect and list eight tools: `generate_qr_code`, `vary_qr_code`, `get_qr_code`, `list_qr_codes`, `change_qr_code_destination`, `get_account`, `get_profile`, `list_styles`.
 2. Call `get_profile`. It should name the connected QRX account.
    - If QRX will not connect, or answers `401` or "Connect a QRX account", no account is connected: the key is missing or wrong, or the user has not signed in yet. Check that the header is exactly `Authorization: Bearer qrx_…` (or `X-API-Key: qrx_…`).
 3. Call `list_styles` to show the user the available looks.
