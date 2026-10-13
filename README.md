@@ -70,7 +70,7 @@ Revoke a key at any time from the same page.
 
 Then run `/mcp`, select **qrx** and sign in to QRX. The plugin also adds the `qrx` skill, which teaches Claude how to write good art prompts, wait for the code and prepare it for print.
 
-The plugin also shows each finished code in the transcript, under the QRX tool call: its picture, the short link it scans to and a link to its QRX page, with a line while the code is still being painted. It is a [mod](https://code.claude.com/docs/en/plugins/mods/overview), so it draws in the terminal (Claude Code 2.1.287 or later) and the Desktop app's Code tab; it fetches the picture with `curl`. Terminals with kitty graphics (kitty, Ghostty) show the full picture; other terminals show it in coloured character cells.
+The plugin also shows each finished code in the transcript, under the QRX tool call: its picture, the short link it scans to and a link to its QRX page, with a line while the code is still being painted. It is a [mod](https://code.claude.com/docs/en/plugins/mods/overview), so it draws in the terminal (Claude Code 2.1.287 or later) and the Desktop app's Code tab; it fetches the picture with `curl`. Terminals with kitty graphics (kitty, Ghostty) show the full picture; other terminals show it in coloured character cells, with a link to the full-quality image.
 
 **Option B: MCP server only**
 

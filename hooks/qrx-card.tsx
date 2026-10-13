@@ -4,6 +4,7 @@
 import type { EngineInterface, Register, RenderElement, RenderInput } from 'claude-code'
 
 import { codeOf, isCodeTool, isQrxUrl, type Code } from './lib/code.ts'
+import { fullQualityUrl, pictureKind } from './lib/picture.ts'
 import { decodePng, encodePng, fromBase64, shrink, toBase64, type Rgb } from './lib/png.ts'
 
 type Picture =
@@ -21,8 +22,6 @@ const PREVIEW = 96
 /** The widest picture the terminal draws, in columns; two pixels go in each cell, one above the other. */
 const MAX_COLUMNS = 48
 const UPPER_HALF = 0x2580
-/** The largest PNG an Image takes (2 MiB decoded), as base64. */
-const MAX_IMAGE_BASE64 = Math.floor(((2 * 1024 * 1024) / 3) * 4)
 
 const slash = (path: string) => path.split(String.fromCharCode(92)).join('/')
 
@@ -101,11 +100,22 @@ async function card($: EngineInterface, e: RenderInput, code: Code): Promise<Ren
     const width = e.viewport?.columns ?? 80
     const columns = Math.max(16, Math.min(MAX_COLUMNS, width - 6)) & ~1
     const rows = Math.round((columns * picture.preview.height) / picture.preview.width / 2)
+    const kind = pictureKind(e.surface, terminalImages, picture.png.length)
+    const fullQuality = fullQualityUrl(kind, code)
     view =
-      terminalImages && picture.png.length <= MAX_IMAGE_BASE64 ? (
+      kind === 'pixels' ? (
         <Image key={`qrx-image-${code.id}`} source={{ png: picture.png }} columns={columns} rows={rows} alt={alt} />
       ) : (
-        <Raster key={`qrx-image-${code.id}`} columns={columns} rows={rows} cells={halfBlocks(picture.preview, columns, rows)} />
+        <Box flexDirection="column">
+          <Raster key={`qrx-image-${code.id}`} columns={columns} rows={rows} cells={halfBlocks(picture.preview, columns, rows)} />
+          {fullQuality ? (
+            <Box key={`qrx-full-quality-${code.id}`} flexDirection="row">
+              <Text dimColor>Open </Text>
+              <Link href={fullQuality} />
+              <Text dimColor> for the full-quality image</Text>
+            </Box>
+          ) : null}
+        </Box>
       )
   } else {
     const { Svg } = $.ui.resolve(e)
