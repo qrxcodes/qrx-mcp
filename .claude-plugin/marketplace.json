@@ -10,7 +10,7 @@
     {
       "name": "qrx",
       "source": "./",
-      "description": "Make branded, print-ready art QR codes that always scan, from a prompt and a link. Includes the QRX MCP server and a skill that teaches prompting, polling and print checks.",
+      "description": "Make branded, print-ready art QR codes that always scan, from a prompt and a link. Includes the QRX MCP server, a skill that teaches prompting, polling and print checks, and a card that shows each finished code in the transcript.",
       "category": "design",
       "tags": ["qr-code", "design", "branding", "print", "marketing", "mcp"],
       "homepage": "https://qrx.codes/developers"

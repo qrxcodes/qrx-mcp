@@ -1,7 +1,7 @@
 {
   "name": "qrx",
   "displayName": "QRX",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Branded, print-ready art QR codes that always scan. Describe a picture and a link; QRX paints the code, verifies it decodes, and hosts it on a qrx.to short link.",
   "author": {
     "name": "QRX",
