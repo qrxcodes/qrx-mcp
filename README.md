@@ -402,6 +402,7 @@ Connecting needs sign-in or an API key. The tool list is public at [`https://qrx
 | Tool | What it does | Read-only |
 |---|---|---|
 | `generate_qr_code` | Starts a new art QR code from a prompt and a link. Returns the code's id straight away. | No |
+| `vary_qr_code` | Makes a new code from one of your codes with a change to its picture, such as "more trees". The new code has its own short link to the same destination; the original doesn't change. | No |
 | `get_qr_code` | Gets a code's status, image and short link. Waits up to `wait` seconds (0 to 25, default 25) for a code that's still being painted. | Yes |
 | `list_qr_codes` | Lists your codes, newest first, a page at a time (`limit` 1 to 100, default 20; pass `nextCursor` as `cursor`). | Yes |
 | `change_qr_code_destination` | Points an existing link code at a new absolute http or https URL (on a paid plan). The printed code keeps working. Marked destructive, because it replaces the old destination. | No |
